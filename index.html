@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dota 2 Draft Helper — Minimal (Rebuilt)</title>
+  <title>Dota2 OutPick</title>
   <style>
     :root{ --bg:#0b0f14; --card:#111722; --soft:#151f2b; --text:#e6edf3; --muted:#9fb0c3; --line:#1d2a3a; }
     *{box-sizing:border-box}
@@ -17,11 +17,11 @@
     /* Enemy queue */
     .queue{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;grid-column:1 / -1}
     .qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .slots{display:flex;gap:8px;justify-content:center}
+    .slots{display:flex;gap:8px;justify-content:center;margin-top:4px}
     .slot{width:72px;height:40px;border-radius:8px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
     .slot.filled{border-style:solid;border-color:#2d466a}
     .slot img{width:100%;height:100%;object-fit:cover}
-    .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:12px;padding:.7rem 1.1rem;font-size:1rem;font-weight:700;cursor:pointer}
+    .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.8rem 1.2rem;font-size:1.05rem;font-weight:700;cursor:pointer}
 
     /* Pool (left) */
     .pool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;grid-column:1 / 2}
@@ -50,12 +50,14 @@
 
     #warn{display:none;margin:0 14px 14px;color:#ffb4a9;background:#2a1b1b;border:1px solid #5a3030;padding:8px 10px;border-radius:10px}
     @media (max-width:860px){.suggest{grid-column:1 / -1;grid-template-rows:unset;grid-template-columns:1fr}.grid{grid-template-columns:repeat(3,1fr)}}
+      .qactions{display:flex;justify-content:center;margin-top:12px}
+    .watermark{max-width:1200px;margin:4px auto 14px;text-align:center;color:var(--muted);opacity:.45;font-size:12px}
   </style>
 </head>
 <body>
   <header>
     <div class="bar">
-      <div class="brand">Draft Helper · Minimal (Rebuilt)</div>
+      <div class="brand">Dota2 OutPick</div>
       <div style="color:var(--muted)">Only interact with Enemy Queue & Hero Pool. Suggestions are view-only.</div>
     </div>
   </header>
@@ -65,9 +67,9 @@
     <section class="queue">
       <div class="qtop">
         <div><strong>Enemy Queue</strong> · <span id="progress" style="color:var(--muted)">0/5</span></div>
-        <button id="clear" class="btn">Clear</button>
       </div>
       <div id="slots" class="slots"></div>
+      <div class="qactions"><button id="clear" class="btn">Clear</button></div>
     </section>
 
     <!-- Pool (left) -->
@@ -90,6 +92,7 @@
 
     <div id="warn">Data not loaded. Check <code>heroes.json</code> is valid JSON (no comments/trailing commas) and reachable.</div>
   </main>
+  <footer class="watermark">designed by moonloichoi in saigon</footer>
 
   <script>
     // ======================== DATA ========================
