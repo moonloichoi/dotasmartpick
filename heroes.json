@@ -1,9 +1,7 @@
-// heroes.json
 {
   "axe": {
     "name": "Axe",
     "counters": ["timbersaw","viper","necrophos"],
     "item_counters": ["eul_s_scepter","force_staff","ghost_scepter"]
-  },
-  "timbersaw": { "name": "Timbersaw", "counters": [], "item_counters": [] }
+  }
 }
