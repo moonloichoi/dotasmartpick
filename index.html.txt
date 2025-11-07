@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dota 2 Draft Helper — Fresh Minimal Build</title>
+  <style>
+    :root{ --bg:#0b0f14; --card:#111722; --soft:#151f2b; --text:#e6edf3; --muted:#9fb0c3; --line:#1d2a3a; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0f14;color:var(--text)}
+    header{position:sticky;top:0;z-index:5;background:rgba(11,15,20,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+    .bar{max-width:1200px;margin:0 auto;padding:.75rem 1rem;display:flex;gap:12px;align-items:center}
+    .brand{font-weight:800}
+
+    main{max-width:1200px;margin:0 auto;padding:14px;display:grid;gap:12px}
+
+    /* Enemy queue */
+    .queue{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+    .qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .slots{display:flex;gap:8px}
+    .slot{width:72px;height:40px;border-radius:8px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
+    .slot.filled{border-style:solid;border-color:#2d466a}
+    .slot img{width:100%;height:100%;object-fit:cover}
+    .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:10px;padding:.42rem .7rem;cursor:pointer}
+
+    /* Pool */
+    .pool{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+    .searchbar{margin-bottom:8px}
+    .searchbar input{width:100%;background:#0e141b;border:1px solid #1b2a3d;color:var(--text);border-radius:10px;padding:.55rem .7rem}
+    .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-height:370px;overflow:auto;padding-right:4px}
+    .tile{position:relative;height:110px;border:1px solid #213247;border-radius:12px;overflow:hidden;cursor:pointer;background:#1a2432}
+    .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(92%) contrast(1.02)}
+    .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 40%, rgba(0,0,0,.55));}
+    .tname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+
+    /* Suggestions */
+    .suggest{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+    .card h3{margin:.1rem 0 .5rem;font-size:1rem;color:#cfe1ff}
+    .list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:300px;overflow:auto;padding-right:4px}
+    .sug{position:relative;height:86px;border:1px solid #213247;border-radius:10px;overflow:hidden;background:#1a2432}
+    .sug img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .sug::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 40%, rgba(0,0,0,.6));}
+    .sname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+
+    @media (max-width:860px){.suggest{grid-template-columns:1fr}.grid{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <div class="brand">Draft Helper · Minimal (Fresh)</div>
+      <div style="color:var(--muted)">Operate only in Enemy Queue & Hero Pool. Suggestions are view-only.</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Enemy Queue -->
+    <section class="queue">
+      <div class="qtop">
+        <div><strong>Enemy Queue</strong> · <span id="progress" style="color:var(--muted)">0/5</span></div>
+        <button id="clear" class="btn">Clear</button>
+      </div>
+      <div id="slots" class="slots"></div>
+    </section>
+
+    <!-- Pool -->
+    <section class="pool">
+      <div class="searchbar"><input id="search" placeholder="Search hero…" /></div>
+      <div id="grid" class="grid"></div>
+    </section>
+
+    <!-- Suggestions -->
+    <section class="suggest">
+      <div class="card">
+        <h3>Suggestion Pick <span style="color:var(--muted)">(counters to enemy)</span></h3>
+        <div id="pickList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
+      </div>
+      <div class="card">
+        <h3>Suggestion Item <span style="color:var(--muted)">(vs enemy lineup)</span></h3>
+        <div id="itemList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ======================== DATA ========================
+    const HEROES = {
+      axe:{ name:"Axe", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/axe.jpg", counters:["timbersaw","viper","necrophos"], item_counters:["Eul's Scepter","Force Staff","Ghost Scepter"] },
+      timbersaw:{ name:"Timbersaw", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/timbersaw.jpg", counters:["ursa","pugna","ancient_apparition"], item_counters:["Spirit Vessel","Silver Edge"] },
+      juggernaut:{ name:"Juggernaut", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/juggernaut.jpg", counters:["axe","disruptor","faceless_void"], item_counters:["Ghost Scepter","Force Staff"] },
+      crystal_maiden:{ name:"Crystal Maiden", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/crystal_maiden.jpg", counters:["ancient_apparition","slark","phantom_assassin"], item_counters:["Glimmer Cape","Force Staff"] },
+      magnus:{ name:"Magnus", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/magnus.jpg", counters:["meepo","phantom_lancer","sven"], item_counters:["Lotus Orb","Force Staff"] },
+      omniknight:{ name:"Omniknight", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/omniknight.jpg", counters:["shadow_demon","ancient_apparition","doom"], item_counters:["Spirit Vessel","Nullifier"] },
+      disruptor:{ name:"Disruptor", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/disruptor.jpg", counters:["storm_spirit","anti_mage","weaver"], item_counters:["Glimmer Cape","Lotus Orb"] },
+      faceless_void:{ name:"Faceless Void", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/faceless_void.jpg", counters:["medusa","drow_ranger","sniper"], item_counters:["Lotus Orb","Linken's Sphere"] },
+      viper:{ name:"Viper", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/viper.jpg", counters:["juggernaut","magnus"], item_counters:["Lotus Orb","Force Staff"] },
+      necrophos:{ name:"Necrophos", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/necrophos.jpg", counters:["anti_mage","viper"], item_counters:["Spirit Vessel","Lotus Orb"] },
+      ursa:{ name:"Ursa", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/ursa.jpg", counters:["timbersaw","disruptor"], item_counters:["Ghost Scepter","Force Staff"] },
+      pugna:{ name:"Pugna", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/pugna.jpg", counters:["juggernaut","omniknight"], item_counters:["Lotus Orb","Glimmer Cape"] },
+      ancient_apparition:{ name:"Ancient Apparition", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/ancient_apparition.jpg", counters:["omniknight","necrophos"], item_counters:["Glimmer Cape","Force Staff"] },
+      storm_spirit:{ name:"Storm Spirit", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/storm_spirit.jpg", counters:["disruptor","faceless_void"], item_counters:["Linken's Sphere","Lotus Orb"] },
+      anti_mage:{ name:"Anti-Mage", img:"https://raw.githubusercontent.com/rohandey/dota2-heroes-img/main/anti_mage.jpg", counters:["disruptor","faceless_void"], item_counters:["Nullifier","Lotus Orb"] }
+    };
+
+    const ITEMS = {
+      eul_s_scepter:{ name:"Eul's Scepter", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/cyclone.png" },
+      force_staff:{ name:"Force Staff", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/force_staff.png" },
+      ghost_scepter:{ name:"Ghost Scepter", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/ghost.png" },
+      lotus_orb:{ name:"Lotus Orb", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/lotus_orb.png" },
+      glimmer_cape:{ name:"Glimmer Cape", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/glimmer_cape.png" },
+      spirit_vessel:{ name:"Spirit Vessel", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/spirit_vessel.png" },
+      silver_edge:{ name:"Silver Edge", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/silver_edge.png" },
+      linken_s_sphere:{ name:"Linken's Sphere", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/sphere.png" },
+      nullifier:{ name:"Nullifier", img:"https://raw.githubusercontent.com/odota/ui/master/public/assets/images/dota2/items/nullifier.png" }
+    };
+
+    const MAX = 5;
+    let enemyQueue = [];
+
+    const el = (id)=>document.getElementById(id);
+    const slots = el('slots');
+    const grid = el('grid');
+    const progress = el('progress');
+    const clearBtn = el('clear');
+    const search = el('search');
+    const pickList = el('pickList');
+    const itemList = el('itemList');
+
+    // ============= RENDER =============
+    function renderQueue(){
+      slots.innerHTML='';
+      for(let i=0;i<MAX;i++){
+        const s = document.createElement('div');
+        const slug = enemyQueue[i];
+        if(slug){
+          s.className='slot filled';
+          const img = document.createElement('img');
+          img.src = HEROES[slug].img || placeholder('HERO');
+          img.alt = HEROES[slug].name;
+          s.title = HEROES[slug].name + ' — click to remove';
+          s.onclick = ()=>{ enemyQueue.splice(i,1); update(); };
+          s.appendChild(img);
+        } else { s.className='slot'; s.textContent = (i+1); }
+        slots.appendChild(s);
+      }
+      progress.textContent = `${enemyQueue.length}/${MAX}`;
+    }
+
+    function renderPool(){
+      grid.innerHTML='';
+      Object.entries(HEROES)
+        .filter(([slug])=> !enemyQueue.includes(slug))
+        .filter(([_,h])=> filterBySearch(h))
+        .sort((a,b)=> a[1].name.localeCompare(b[1].name))
+        .forEach(([slug,h])=>{
+          const t = document.createElement('div');
+          t.className='tile';
+          t.innerHTML = `<img src="${h.img || placeholder('HERO')}" alt="${h.name}"><div class="tname">${h.name}</div>`;
+          t.onclick = ()=>{ if(enemyQueue.length<MAX){ enemyQueue.push(slug); update(); } };
+          grid.appendChild(t);
+        });
+    }
+
+    function renderSuggestions(){
+      // Collect unique suggestions
+      const heroSet = new Set();
+      const itemSet = new Set();
+      enemyQueue.forEach(slug=>{
+        const h = HEROES[slug];
+        (h.counters||[]).forEach(c=> heroSet.add(c));
+        (h.item_counters||[]).forEach(it=> itemSet.add(it));
+      });
+      enemyQueue.forEach(slug=> heroSet.delete(slug));
+
+      const heroes = [...heroSet].filter(s=>HEROES[s]).sort((a,b)=>HEROES[a].name.localeCompare(HEROES[b].name));
+      const items  = [...itemSet].sort((a,b)=>a.localeCompare(b));
+
+      pickList.innerHTML='';
+      itemList.innerHTML='';
+      if(!heroes.length) pickList.innerHTML = `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
+      if(!items.length) itemList.innerHTML  = `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
+
+      heroes.forEach(slug=>{
+        const h = HEROES[slug];
+        const e = document.createElement('div');
+        e.className='sug';
+        e.innerHTML = `<img src="${h.img || placeholder('HERO')}" alt="${h.name}"><div class="sname">${h.name}</div>`;
+        // view-only (unclickable)
+        pickList.appendChild(e);
+      });
+
+      items.forEach(name=>{
+        const meta = ITEMS[itemSlug(name)];
+        const e = document.createElement('div');
+        e.className='sug';
+        const src = meta?.img || placeholder('ITEM');
+        e.innerHTML = `<img src="${src}" alt="${name}"><div class="sname">${name}</div>`;
+        itemList.appendChild(e);
+      });
+    }
+
+    function placeholder(label){
+      const t = label||'HERO';
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#223047"/><stop offset="1" stop-color="#0f1722"/></linearGradient></defs><rect fill="url(#g)" width="400" height="240"/><text x="20" y="210" fill="#cfe1ff" font-family="system-ui,Segoe UI,Roboto" font-size="26" font-weight="700">${t}</text></svg>`);
+    }
+
+    // ============= STATE & EVENTS =============
+    function update(){ renderQueue(); renderPool(); renderSuggestions(); save(); }
+    function save(){ localStorage.setItem('enemyQueue', JSON.stringify(enemyQueue)); }
+    function load(){ try{ enemyQueue = JSON.parse(localStorage.getItem('enemyQueue')||'[]'); }catch{ enemyQueue=[]; } }
+    function filterBySearch(h){ const term=(search?.value||'').trim().toLowerCase(); return !term || h.name.toLowerCase().includes(term); }
+    function itemSlug(name){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
+
+    clearBtn.onclick = ()=>{ enemyQueue=[]; update(); };
+    search.addEventListener('input', ()=> renderPool());
+
+    // init
+    load();
+    update();
+  </script>
+</body>
+</html>
