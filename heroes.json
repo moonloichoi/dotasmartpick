@@ -1,7 +1,1136 @@
 {
+  "abaddon": {
+    "name": "Abaddon",
+    "counters": [
+      "shadow_demon"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "alchemist": {
+    "name": "Alchemist",
+    "counters": [
+      "ancient_apparition"
+    ],
+    "item_counters": [
+      "spirit_vessel"
+    ]
+  },
+  "ancient_apparition": {
+    "name": "Ancient Apparition",
+    "counters": [
+      "weaver"
+    ],
+    "item_counters": [
+      "blink_dagger"
+    ]
+  },
+  "anti-mage": {
+    "name": "Anti-Mage",
+    "counters": [
+      "huskar"
+    ],
+    "item_counters": [
+      "magic_wand"
+    ]
+  },
+  "arc_warden": {
+    "name": "Arc Warden",
+    "counters": [
+      "broodmother"
+    ],
+    "item_counters": [
+      "harpoon"
+    ]
+  },
   "axe": {
     "name": "Axe",
-    "counters": ["timbersaw","viper","necrophos"],
-    "item_counters": ["eul_s_scepter","force_staff","ghost_scepter"]
+    "counters": [
+      "timbersaw"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "bane": {
+    "name": "Bane",
+    "counters": [
+      "lycan"
+    ],
+    "item_counters": [
+      "lotus_orb"
+    ]
+  },
+  "batrider": {
+    "name": "Batrider",
+    "counters": [
+      "queen_of_pain"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "beastmaster": {
+    "name": "Beastmaster",
+    "counters": [
+      "elder_titan"
+    ],
+    "item_counters": [
+      "mjollnir"
+    ]
+  },
+  "bloodseeker": {
+    "name": "Bloodseeker",
+    "counters": [
+      "dawnbreaker"
+    ],
+    "item_counters": [
+      "town_portal_scroll"
+    ]
+  },
+  "bounty_hunter": {
+    "name": "Bounty Hunter",
+    "counters": [
+      "slark"
+    ],
+    "item_counters": [
+      "dust_of_appearance"
+    ]
+  },
+  "brewmaster": {
+    "name": "Brewmaster",
+    "counters": [
+      "dark_seer"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "bristleback": {
+    "name": "Bristleback",
+    "counters": [
+      "viper"
+    ],
+    "item_counters": [
+      "silver_edge"
+    ]
+  },
+  "broodmother": {
+    "name": "Broodmother",
+    "counters": [
+      "earthshaker"
+    ],
+    "item_counters": [
+      "mjollnir"
+    ]
+  },
+  "centaur_warrunner": {
+    "name": "Centaur Warrunner",
+    "counters": [
+      "underlord"
+    ],
+    "item_counters": [
+      "satanic"
+    ]
+  },
+  "chaos_knight": {
+    "name": "Chaos Knight",
+    "counters": [
+      "sand_king"
+    ],
+    "item_counters": [
+      "battle_fury"
+    ]
+  },
+  "chen": {
+    "name": "Chen",
+    "counters": [
+      "winter_wyvern"
+    ],
+    "item_counters": [
+      "dagon"
+    ]
+  },
+  "clinkz": {
+    "name": "Clinkz",
+    "counters": [
+      "phantom_lancer"
+    ],
+    "item_counters": [
+      "boots_of_travel"
+    ]
+  },
+  "clockwerk": {
+    "name": "Clockwerk",
+    "counters": [
+      "huskar"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "crystal_maiden": {
+    "name": "Crystal Maiden",
+    "counters": [
+      "rubick"
+    ],
+    "item_counters": [
+      "satanic"
+    ]
+  },
+  "dark_seer": {
+    "name": "Dark Seer",
+    "counters": [
+      "oracle"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "dark_willow": {
+    "name": "Dark Willow",
+    "counters": [
+      "axe"
+    ],
+    "item_counters": [
+      "blade_mail"
+    ]
+  },
+  "dawnbreaker": {
+    "name": "Dawnbreaker",
+    "counters": [
+      "nyx_assassin"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "dazzle": {
+    "name": "Dazzle",
+    "counters": [
+      "axe"
+    ],
+    "item_counters": [
+      "glimmer_cape"
+    ]
+  },
+  "death_prophet": {
+    "name": "Death Prophet",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "infused_raindrops"
+    ]
+  },
+  "disruptor": {
+    "name": "Disruptor",
+    "counters": [
+      "pangolier"
+    ],
+    "item_counters": [
+      "black_king_bar"
+    ]
+  },
+  "doom": {
+    "name": "Doom",
+    "counters": [
+      "medusa"
+    ],
+    "item_counters": [
+      "linken_s_sphere"
+    ]
+  },
+  "dragon_knight": {
+    "name": "Dragon Knight",
+    "counters": [
+      "viper"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "drow_ranger": {
+    "name": "Drow Ranger",
+    "counters": [
+      "spirit_breaker"
+    ],
+    "item_counters": [
+      "assault_cuirass"
+    ]
+  },
+  "earth_spirit": {
+    "name": "Earth Spirit",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "black_king_bar"
+    ]
+  },
+  "earthshaker": {
+    "name": "Earthshaker",
+    "counters": [
+      "templar_assassin"
+    ],
+    "item_counters": [
+      "guardian_greaves"
+    ]
+  },
+  "elder_titan": {
+    "name": "Elder Titan",
+    "counters": [
+      "lycan"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "ember_spirit": {
+    "name": "Ember Spirit",
+    "counters": [
+      "slark"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "enchantress": {
+    "name": "Enchantress",
+    "counters": [
+      "marci"
+    ],
+    "item_counters": [
+      "silver_edge"
+    ]
+  },
+  "enigma": {
+    "name": "Enigma",
+    "counters": [
+      "silencer"
+    ],
+    "item_counters": [
+      "aeon_disk"
+    ]
+  },
+  "faceless_void": {
+    "name": "Faceless Void",
+    "counters": [
+      "naga_siren"
+    ],
+    "item_counters": [
+      "aeon_disk"
+    ]
+  },
+  "grimstroke": {
+    "name": "Grimstroke",
+    "counters": [
+      "naga_siren"
+    ],
+    "item_counters": [
+      "lotus_orb"
+    ]
+  },
+  "gyrocopter": {
+    "name": "Gyrocopter",
+    "counters": [
+      "ancient_apparition"
+    ],
+    "item_counters": [
+      "blade_mail"
+    ]
+  },
+  "hoodwink": {
+    "name": "Hoodwink",
+    "counters": [
+      "timbersaw"
+    ],
+    "item_counters": [
+      "quelling_blade"
+    ]
+  },
+  "huskar": {
+    "name": "Huskar",
+    "counters": [
+      "ancient_apparition"
+    ],
+    "item_counters": [
+      "eye_of_skadi"
+    ]
+  },
+  "invoker": {
+    "name": "Invoker",
+    "counters": [
+      "Riki"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "io": {
+    "name": "IO",
+    "counters": [
+      "troll_warlord"
+    ],
+    "item_counters": [
+      "blink_dagger"
+    ]
+  },
+  "jakiro": {
+    "name": "Jakiro",
+    "counters": [
+      "rubick"
+    ],
+    "item_counters": [
+      "black_king_bar"
+    ]
+  },
+  "juggernaut": {
+    "name": "Juggernaut",
+    "counters": [
+      "riki"
+    ],
+    "item_counters": [
+      "shadow_blade"
+    ]
+  },
+  "keeper_of_the_light": {
+    "name": "Keeper of the Light",
+    "counters": [
+      "lycan"
+    ],
+    "item_counters": [
+      "glimmer_cape"
+    ]
+  },
+  "kez": {
+    "name": "Kez",
+    "counters": [
+      "muerta"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "kunkka": {
+    "name": "Kunkka",
+    "counters": [
+      "lifestealer"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "legion_commander": {
+    "name": "Legion Commander",
+    "counters": [
+      "wraith_king"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "leshrac": {
+    "name": "Leshrac",
+    "counters": [
+      "queen_of_pain"
+    ],
+    "item_counters": [
+      "blade_mail"
+    ]
+  },
+  "lich": {
+    "name": "Lich",
+    "counters": [
+      "bristleback"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "lifestealer": {
+    "name": "Lifestealer",
+    "counters": [
+      "morphling"
+    ],
+    "item_counters": [
+      "hurrcane_pike"
+    ]
+  },
+  "lina": {
+    "name": "Lina",
+    "counters": [
+      "axe"
+    ],
+    "item_counters": [
+      "glimmer_cape"
+    ]
+  },
+  "lion": {
+    "name": "Lion",
+    "counters": [
+      "razor"
+    ],
+    "item_counters": [
+      "magic_wand"
+    ]
+  },
+  "lone_druid": {
+    "name": "Lone Druid",
+    "counters": [
+      "pangolier"
+    ],
+    "item_counters": [
+      "harpoon"
+    ]
+  },
+  "luna": {
+    "name": "Luna",
+    "counters": [
+      "underlord"
+    ],
+    "item_counters": [
+      "crimson_guard"
+    ]
+  },
+  "lycan": {
+    "name": "Lycan",
+    "counters": [
+      "necrophos"
+    ],
+    "item_counters": [
+      "ghost_scepter"
+    ]
+  },
+  "magnus": {
+    "name": "Magnus",
+    "counters": [
+      "puck"
+    ],
+    "item_counters": [
+      "scythe_of_vyse"
+    ]
+  },
+  "marci": {
+    "name": "Marci",
+    "counters": [
+      "troll_warlord"
+    ],
+    "item_counters": [
+      "ghost_scepter"
+    ]
+  },
+  "mars": {
+    "name": "Mars",
+    "counters": [
+      "lifestealer"
+    ],
+    "item_counters": [
+      "black_king_bar"
+    ]
+  },
+  "medusa": {
+    "name": "Medusa",
+    "counters": [
+      "anti-mage"
+    ],
+    "item_counters": [
+      "diffusal_blade"
+    ]
+  },
+  "meepo": {
+    "name": "Meepo",
+    "counters": [
+      "winter_wyvern"
+    ],
+    "item_counters": [
+      "skull_basher"
+    ]
+  },
+  "mirana": {
+    "name": "Mirana",
+    "counters": [
+      "bounty_hunter"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "monkey_king": {
+    "name": "Monkey King",
+    "counters": [
+      "muerta"
+    ],
+    "item_counters": [
+      "heaven_s_halberd"
+    ]
+  },
+  "morphling": {
+    "name": "Morphling",
+    "counters": [
+      "rubick"
+    ],
+    "item_counters": [
+      "eye_of_skadi"
+    ]
+  },
+  "muerta": {
+    "name": "Muerta",
+    "counters": [
+      "anti-mage"
+    ],
+    "item_counters": [
+      "heaven_s_halberd"
+    ]
+  },
+  "naga_siren": {
+    "name": "Naga Siren",
+    "counters": [
+      "sven"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "nature_s_prophet": {
+    "name": "Nature's Prophet",
+    "counters": [
+      "primal_beast"
+    ],
+    "item_counters": [
+      "quelling_blade"
+    ]
+  },
+  "necrophos": {
+    "name": "Necrophos",
+    "counters": [
+      "ancient_apparition"
+    ],
+    "item_counters": [
+      "nullifier"
+    ]
+  },
+  "night_stalker": {
+    "name": "Night Stalker",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "nyx_assassin": {
+    "name": "Nyx Assassin",
+    "counters": [
+      "slardar"
+    ],
+    "item_counters": [
+      "sentry_ward"
+    ]
+  },
+  "orge_magi": {
+    "name": "Ogre Magi",
+    "counters": [
+      "anti-mage"
+    ],
+    "item_counters": [
+      "lotus_orb"
+    ]
+  },
+  "omniknight": {
+    "name": "Omniknight",
+    "counters": [
+      "luna"
+    ],
+    "item_counters": [
+      "nullifier"
+    ]
+  },
+  "oracle": {
+    "name": "Oracle",
+    "counters": [
+      "ursa"
+    ],
+    "item_counters": [
+      "blink_dagger"
+    ]
+  },
+  "outworld_destroyer": {
+    "name": "Outworld Destroyer",
+    "counters": [
+      "nyx_assassin"
+    ],
+    "item_counters": [
+      "heaven_s_halberd"
+    ]
+  },
+  "pangolier": {
+    "name": "Pangolier",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "assault_cuirass"
+    ]
+  },
+  "phantom_assassin": {
+    "name": "Phantom Assasin",
+    "counters": [
+      "axe"
+    ],
+    "item_counters": [
+      "monkey_king_bar"
+    ]
+  },
+  "phantom_lancer": {
+    "name": "Phantom Lancer",
+    "counters": [
+      "axe"
+    ],
+    "item_counters": [
+      "mjollnir"
+    ]
+  },
+  "phoenix": {
+    "name": "Phoenix",
+    "counters": [
+      "huskar"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "primal_beast": {
+    "name": "Primal Beast",
+    "counters": [
+      "shadow_demon"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "puck": {
+    "name": "Puck",
+    "counters": [
+      "night_stalker"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "pudge": {
+    "name": "Pudge",
+    "counters": [
+      "monkey_king"
+    ],
+    "item_counters": [
+      "hurricane_pike"
+    ]
+  },
+  "pugna": {
+    "name": "Pugna",
+    "counters": [
+      "pudge"
+    ],
+    "item_counters": [
+      "nullifier"
+    ]
+  },
+  "queen_of_pain": {
+    "name": "Queen Of Pain",
+    "counters": [
+      "puck"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "razor": {
+    "name": "Razor",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "hurricane_pike"
+    ]
+  },
+  "riki": {
+    "name": "Riki",
+    "counters": [
+      "bristleback"
+    ],
+    "item_counters": [
+      "sentry_ward"
+    ]
+  },
+  "ringmaster": {
+    "name": "RM",
+    "counters": [
+      "slark"
+    ],
+    "item_counters": [
+      "nullifier"
+    ]
+  },
+  "rubick": {
+    "name": "Rubick",
+    "counters": [
+      "tusk"
+    ],
+    "item_counters": [
+      "magic_wand"
+    ]
+  },
+  "sand_king": {
+    "name": "Sand King",
+    "counters": [
+      "lifestealer"
+    ],
+    "item_counters": [
+      "pipe_of_insight"
+    ]
+  },
+  "shadow_demon": {
+    "name": "Shadow Demon",
+    "counters": [
+      "riki"
+    ],
+    "item_counters": [
+      "satanic"
+    ]
+  },
+  "shadow_fiend": {
+    "name": "Shadow Fiend",
+    "counters": [
+      "bristleback"
+    ],
+    "item_counters": [
+      "assault_cuirass"
+    ]
+  },
+  "shadow_shaman": {
+    "name": "Shadow Shaman",
+    "counters": [
+      "medusa"
+    ],
+    "item_counters": [
+      "sange_and_yasha"
+    ]
+  },
+  "silencer": {
+    "name": "Silencer",
+    "counters": [
+      "Abaddon"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "skywrath_mage": {
+    "name": "Skywrath Mage",
+    "counters": [
+      "lycan"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "slardar": {
+    "name": "Slardar",
+    "counters": [
+      "chaos_knight"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "slark": {
+    "name": "Slark",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "glimmer_cape"
+    ]
+  },
+  "snapfire": {
+    "name": "Snapfire",
+    "counters": [
+      "nyx_assassin"
+    ],
+    "item_counters": [
+      "infused_raindrops"
+    ]
+  },
+  "sniper": {
+    "name": "Sniper",
+    "counters": [
+      "storm_spirit"
+    ],
+    "item_counters": [
+      "smoke_of_deceit"
+    ]
+  },
+  "spectre": {
+    "name": "Spectre",
+    "counters": [
+      "abaddon"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "spirit_breaker": {
+    "name": "Spirit Breaker",
+    "counters": [
+      "clockwerk"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "storm_spirit": {
+    "name": "Storm Spirit",
+    "counters": [
+      "anti-mage"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "sven": {
+    "name": "Sven",
+    "counters": [
+      "dragon_knight"
+    ],
+    "item_counters": [
+      "assault_cuirass"
+    ]
+  },
+  "techies": {
+    "name": "Techies",
+    "counters": [
+      "templar_assassin"
+    ],
+    "item_counters": [
+      "pipe_of_insight"
+    ]
+  },
+  "templar_assassin": {
+    "name": "Templar Assassin",
+    "counters": [
+      "dark_seer"
+    ],
+    "item_counters": [
+      "heaven_s_halberd"
+    ]
+  },
+  "terrorblade": {
+    "name": "Terrorblade",
+    "counters": [
+      "dark_seer"
+    ],
+    "item_counters": [
+      "smoke_of_deceit"
+    ]
+  },
+  "tidehunter": {
+    "name": "Tidehunter",
+    "counters": [
+      "timbersaw"
+    ],
+    "item_counters": [
+      "silver_edge"
+    ]
+  },
+  "timbersaw": {
+    "name": "Timbersaw",
+    "counters": [
+      "bloodseeker"
+    ],
+    "item_counters": [
+      "spirit_vessel"
+    ]
+  },
+  "tinker": {
+    "name": "Tinker",
+    "counters": [
+      "medusa"
+    ],
+    "item_counters": [
+      "nullifier"
+    ]
+  },
+  "tiny": {
+    "name": "Tiny",
+    "counters": [
+      "lifestealer"
+    ],
+    "item_counters": [
+      "satanic"
+    ]
+  },
+  "treant_protector": {
+    "name": "Treat Protector",
+    "counters": [
+      "timbersaw"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "troll_warlord": {
+    "name": "Troll Warlord",
+    "counters": [
+      "abaddon"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "tusk": {
+    "name": "Tusk",
+    "counters": [
+      "dark_willow"
+    ],
+    "item_counters": [
+      "force_staff"
+    ]
+  },
+  "underlord": {
+    "name": "Underlord",
+    "counters": [
+      "rubick"
+    ],
+    "item_counters": [
+      "pipe_of_insight"
+    ]
+  },
+  "undying": {
+    "name": "Undying",
+    "counters": [
+      "medusa"
+    ],
+    "item_counters": [
+      "crimson_guard"
+    ]
+  },
+  "ursa": {
+    "name": "Ursa",
+    "counters": [
+      "razor"
+    ],
+    "item_counters": [
+      "eul_s_scepter"
+    ]
+  },
+  "vengeful_spirit": {
+    "name": "Vengeful Spirit",
+    "counters": [
+      "phantom_lancer"
+    ],
+    "item_counters": [
+      "linken_s_sphere"
+    ]
+  },
+  "venomancer": {
+    "name": "Venomancer",
+    "counters": [
+      "slark"
+    ],
+    "item_counters": [
+      "lotus_orb"
+    ]
+  },
+  "viper": {
+    "name": "Viper",
+    "counters": [
+      "terrorblade"
+    ],
+    "item_counters": [
+      "manta_style"
+    ]
+  },
+  "visage": {
+    "name": "Visage",
+    "counters": [
+      "winter_wyvern"
+    ],
+    "item_counters": [
+      "crimson_guard"
+    ]
+  },
+  "void_spirit": {
+    "name": "Void Spirit",
+    "counters": [
+      "night_stalker"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "warlock": {
+    "name": "Warlock",
+    "counters": [
+      "lycan"
+    ],
+    "item_counters": [
+      "lotus_orb"
+    ]
+  },
+  "weaver": {
+    "name": "Weaver",
+    "counters": [
+      "faceless_void"
+    ],
+    "item_counters": [
+      "orchid_malevolence"
+    ]
+  },
+  "windranger": {
+    "name": "Windranger",
+    "counters": [
+      "bane"
+    ],
+    "item_counters": [
+      "blade_mail"
+    ]
+  },
+  "winter_wyvern": {
+    "name": "Winter Wyvern",
+    "counters": [
+      "skywrath_mage"
+    ],
+    "item_counters": [
+      "blink_dagger"
+    ]
+  },
+  "witch_doctor": {
+    "name": "Witch Doctor",
+    "counters": [
+      "silencer"
+    ],
+    "item_counters": [
+      "ghost_scepter"
+    ]
+  },
+  "wraith_king": {
+    "name": "Wraith King",
+    "counters": [
+      "centaur_warrunner"
+    ],
+    "item_counters": [
+      "glimmer_cape"
+    ]
+  },
+  "zeus": {
+    "name": "Zeus",
+    "counters": [
+      "ember_spirit"
+    ],
+    "item_counters": [
+      "pipe_of_insight"
+    ]
   }
 }
