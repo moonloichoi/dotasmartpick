@@ -3,80 +3,81 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DOTA2 Outpick</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Dota2 OutPick</title>
+  <!-- layout only; styling in styles.css -->
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <!-- ===== HEADER ===== -->
   <header>
     <div class="bar">
-      <div class="brand">DOTA2 Outpick</div>
-      <div class="strap">Everything can work in Dota!</div>
+      <div class="brand">Dota2 OutPick</div>
+      <div class="tag">Everything can work in Dota!</div>
       <div style="width:18px"></div>
     </div>
   </header>
 
-  <!-- ===== MAIN PAGE ===== -->
   <main>
-    <!-- === Enemy Queue === -->
-    <section class="queue card">
+    <!-- Enemy queue (spans both columns) -->
+    <section class="card queue">
       <div class="sectionTitle">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
-        <strong>Enemy queue</strong>
-        <span id="progress" style="color:var(--muted);margin-left:6px">0/5</span>
+        <!-- simple dot icon -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor"/></svg>
+        Enemy queue <span id="progress" style="margin-left:6px;color:#9fb0c3"></span>
       </div>
       <div class="qbody">
-        <div id="slots" class="slots"></div>
+        <div id="slots" class="slots" aria-label="Enemy queue slots"></div>
         <div class="qactions">
-          <button id="btnClear" class="btn">Clear</button>
+          <button id="btnClear" class="btn" type="button">Clear</button>
         </div>
       </div>
     </section>
 
-    <!-- === CONTENT (POOL + SUGGESTIONS) === -->
-    <div class="content">
-      <!-- LEFT: Choose your enemies -->
-      <section class="pool card">
+    <!-- Left: Choose your enemies -->
+    <section class="card pool splitL">
+      <div class="sectionTitle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor"/></svg>
+        Choose your enemies
+      </div>
+
+      <div class="searchbar">
+        <input id="search" type="text" placeholder="Search heroes..." autocomplete="off" />
+        <button id="clearSearch" class="clearX" type="button">Clear</button>
+      </div>
+
+      <!-- grid: exactly 4 visible rows (internal scroll via CSS) -->
+      <div id="pool" class="grid" aria-label="Hero pool grid"></div>
+    </section>
+
+    <!-- Right: You should pick / buy -->
+    <section class="card suggest splitR">
+      <!-- Pick row -->
+      <div>
         <div class="sectionTitle">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
-          <strong>Choose your enemies</strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          You should pick
         </div>
-        <div class="searchbar">
-          <input id="search" placeholder="Search hero…" />
-          <button id="clearSearch" class="clearX" title="Clear">×</button>
-        </div>
-        <div id="pool" class="grid"></div>
-      </section>
+        <!-- exactly 1 row of 5 cards; fixed height (CSS enforces) -->
+        <div id="suggestPick" class="list" aria-label="Pick suggestions row"></div>
+      </div>
 
-      <!-- RIGHT: You should pick/buy -->
-      <section class="panel">
-        <div class="card">
-          <div class="sectionTitle">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
-            <strong>You should pick:</strong>
-          </div>
-          <div id="suggestPick" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
+      <!-- Buy row -->
+      <div id="buyBlock">
+        <div class="sectionTitle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12l-1.5 9h-9L6 6zM8 18a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4z" fill="currentColor"/></svg>
+          You should buy
         </div>
-
-        <div class="card">
-          <div class="sectionTitle">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
-            <strong>You should buy:</strong>
-          </div>
-          <div id="suggestItem" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
-        </div>
-      </section>
-    </div>
+        <!-- exactly 1 row of 5 cards; item 11:8 ratio (CSS enforces) -->
+        <div id="suggestItem" class="list" aria-label="Item suggestions row"></div>
+      </div>
+    </section>
   </main>
 
-  <!-- ===== FOOTER + TOAST ===== -->
-  <footer class="watermark">designed by moonloichoi in saigon</footer>
-  <div id="toast" class="toast">You have queued 5 enemies already!</div>
+  <div class="watermark">v0 • For internal testing only</div>
 
-  <!-- ===== SCRIPT LOAD ORDER ===== -->
-  <script src="data.js"></script>
-  <script src="state.js"></script>
-  <script src="logic.js"></script>
-  <script src="main.js"></script>
+  <!-- Toast (state_notifications) -->
+  <div id="toast" class="toast" role="status" aria-live="polite" style="display:none"></div>
+
+  <!-- scripts: keep original load order & separate files -->
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
