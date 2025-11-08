@@ -13,3 +13,9 @@ function loadState() {
 function saveState() {
   localStorage.setItem('enemyQueue', JSON.stringify(state.enemyQueue));
 }
+
+// ===== Global expose =====
+window.MAX = MAX;
+window.state = state;
+window.loadState = loadState;
+window.saveState = saveState;
