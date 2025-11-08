@@ -1,6 +1,6 @@
-import { MAX, state, loadState, saveState } from "./state.js";
-import { HEROES, ITEMS, loadData, placeholder } from "./data.js";
-import { buildSuggestions } from "./logic.js";
+import { MAX, state, loadState, saveState } from "../core/state.js";
+import { HEROES, ITEMS, loadData, placeholder } from "../core/data.js";
+import { buildSuggestions } from "../core/logic.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -82,7 +82,20 @@ function renderSuggestions(){
     const e = document.createElement("div");
     e.className = "sug";
     e.setAttribute("aria-disabled","true");
-    e.innerHTML = `<img src="${h.img}" alt="${h.name}"><div class="sname">${h.name}</div>`;
+    e.innerHTML = `<img src="${h.img || placeholder('HERO')}" alt="${h.name}"><div class="sname">${h.name}</div>`;
+    const srcWrap = document.createElement("div");
+    srcWrap.className = "sources";
+    const sources = [...(heroSources.get(slug)||[])];
+    sources.slice(0,4).forEach(slg=>{
+      const box = document.createElement("div"); box.className="src";
+      box.innerHTML = `<img src="${HEROES[slg]?.img || placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
+      srcWrap.appendChild(box);
+    });
+    if(sources.length>4){
+      const more = document.createElement("div"); more.className="src more"; more.textContent = `+${sources.length-4}`;
+      srcWrap.appendChild(more);
+    }
+    e.appendChild(srcWrap);
     pickList.appendChild(e);
   });
 
@@ -96,6 +109,19 @@ function renderSuggestions(){
     e.className = "sug";
     e.setAttribute("aria-disabled","true");
     e.innerHTML = `<img src="${meta.img}" alt="${meta.name}"><div class="sname">${meta.name}</div>`;
+    const srcWrap = document.createElement("div");
+    srcWrap.className = "sources";
+    const sources = [...(itemSources.get(key)||[])];
+    sources.slice(0,4).forEach(slg=>{
+      const box = document.createElement("div"); box.className="src";
+      box.innerHTML = `<img src="${HEROES[slg]?.img || placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
+      srcWrap.appendChild(box);
+    });
+    if(sources.length>4){
+      const more = document.createElement("div"); more.className="src more"; more.textContent = `+${sources.length-4}`;
+      srcWrap.appendChild(more);
+    }
+    e.appendChild(srcWrap);
     itemList.appendChild(e);
   });
 }
