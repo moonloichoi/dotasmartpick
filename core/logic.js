@@ -1,17 +1,22 @@
-// ===== logic.js =====
-// Build maps of suggestions (hero + item) based on enemy queue
-function buildSuggestions(enemyQueue, HEROES) {
+import { itemSlug } from "./data.js";
+
+/** Build suggestion maps with full source tracking */
+export function buildSuggestions(enemyQueue, HEROES){
   const heroSources = new Map();  // heroSlug -> Set(enemySlug)
   const itemSources = new Map();  // itemSlug -> Set(enemySlug)
 
-  enemyQueue.forEach(eSlug => {
+  enemyQueue.forEach(eSlug=>{
     const enemy = HEROES[eSlug];
-    (enemy?.counters || []).forEach(sug => {
+
+    // Hero counters: show ALL sources; skip if already in queue
+    (enemy?.counters || []).forEach(sug=>{
       if (enemyQueue.includes(sug)) return;
       if (!heroSources.has(sug)) heroSources.set(sug, new Set());
       heroSources.get(sug).add(eSlug);
     });
-    (enemy?.item_counters || []).forEach(it => {
+
+    // Item counters: same rule
+    (enemy?.item_counters || []).forEach(it=>{
       const key = itemSlug(it);
       if (!itemSources.has(key)) itemSources.set(key, new Set());
       itemSources.get(key).add(eSlug);
@@ -20,6 +25,3 @@ function buildSuggestions(enemyQueue, HEROES) {
 
   return { heroSources, itemSources };
 }
-
-// ===== Global expose =====
-window.buildSuggestions = buildSuggestions;
