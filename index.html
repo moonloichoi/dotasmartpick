@@ -1,108 +1,120 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dota2 OutPick</title>
-  <style>
-    :root{ --bg:#0b0f14; --card:#111722; --soft:#151f2b; --text:#e6edf3; --muted:#9fb0c3; --line:#1d2a3a; --brand:#3b82f6; --hdr:56px; }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dota2 OutPick</title>
+<style>
+  :root{
+    --bg:#0b0f14; --card:#111722; --soft:#151f2b; --text:#e6edf3; --muted:#9fb0c3; --line:#1d2a3a; --brand:#3b82f6;
+    --hdr:56px;          /* header height */
+    --wmh:22px;          /* watermark line */
+    --gap:12px;
 
-    /* Header */
-    header{position:sticky;top:0;z-index:5;background:rgba(11,15,20,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-    .bar{max-width:1200px;margin:0 auto;padding:0 1rem;height:var(--hdr);display:flex;gap:12px;align-items:center}
-    .brand{font-weight:800}
-    .tag{flex:1;text-align:center;color:var(--muted)}
+    /* SIZE DIALS (desktop) */
+    --queueBand:120px;   /* top band */
+    --poolRow:80px;      /* hero tile height in pool */
+    --poolVisible:4.2;   /* 4 rows + peeking 5th */
+    --sugRow:110px;      /* suggestion tile height */
+    --sugVisible:2;      /* 2 rows visible */
+  }
 
-    /* Layout */
-    main{max-width:1200px;margin:0 auto;padding:8px;display:flex;flex-direction:column;gap:10px;height:calc(100vh - var(--hdr) - 24px);}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-    .splitL{box-shadow:inset -1px 0 0 var(--line)}
-    .splitR{box-shadow:inset 1px 0 0 var(--line)}
-    .sectionTitle{display:flex;align-items:center;gap:8px;margin:2px 0 10px;font-size:1rem;color:#cfe1ff}
-    .sectionTitle svg{width:18px;height:18px;opacity:.9}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 
-    /* Enemy queue */
-    .queue{grid-column:1 / -1;}
-    .qbody{display:flex;flex-direction:column;gap:8px}
-    .slots{display:flex;gap:8px;justify-content:center}
-    .slot{width:100px;aspect-ratio:16/9;border-radius:10px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
-    .slot.filled{border-style:solid;border-color:#2d466a}
-    .slot img{width:100%;height:100%;object-fit:cover}
-    .qactions{display:flex;justify-content:center;margin-top:2px}
-    .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.7rem 1.1rem;font-size:1rem;font-weight:700;cursor:pointer}
-    .queue.card{flex:0 0 150px;}
-    .qbody{display:flex;flex-direction:column;gap:10px}
-    .slots{display:flex;gap:8px;justify-content:center}
-    .slot{width:104px;aspect-ratio:16/9;border-radius:10px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
-    .slot.filled{border-style:solid;border-color:#2d466a}
-    .slot img{width:100%;height:100%;object-fit:cover}
-    .qactions{display:flex;justify-content:center;margin-top:6px}
-    .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.9rem 1.3rem;font-size:1.05rem;font-weight:700;cursor:pointer}
+  header{position:sticky;top:0;z-index:5;background:rgba(11,15,20,.85);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .bar{max-width:1200px;margin:0 auto;padding:0 16px;height:var(--hdr);display:flex;gap:12px;align-items:center}
+  .brand{font-weight:800}
+  .strap{flex:1;text-align:center;color:var(--muted)}
 
-    /* Left: Pool */
-    .pool{grid-column:auto}
-    .searchbar{position:relative;margin-bottom:8px}
-    .searchbar input{width:100%;background:#0e141b;border:1px solid #1b2a3d;color:var(--text);border-radius:10px;padding:.55rem .7rem}
-    .searchbar button.clearX{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#0e141b;border:1px solid #213247;color:#9fb0c3;border-radius:8px;padding:.2rem .45rem;cursor:pointer}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:420px;overflow:auto;padding-right:4px}
-    .tile{position:relative;border:1px solid #213247;border-radius:10px;overflow:hidden;cursor:pointer;background:#1a2432;aspect-ratio:16/9}
-    .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(92%) contrast(1.02)}
-    .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 45%, rgba(0,0,0,.55));}
-    .tname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-    .tile.picked{outline:3px solid var(--brand); box-shadow:0 0 0 2px rgba(59,130,246,.35) inset; filter:saturate(1.05) brightness(1.05)}
-    .pickedBadge{position:absolute;top:6px;left:6px;background:var(--brand);border-radius:8px;padding:.1rem .35rem;font-size:.75rem;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.35)}
-    .tile:hover{transform:translateY(-1px);transition:transform .08s ease}
+  main{max-width:1200px;margin:0 auto;padding:8px;display:flex;flex-direction:column;gap:var(--gap);height:calc(100vh - var(--hdr) - var(--wmh) - 10px);overflow:hidden}
 
-    /* Right: Suggestions */
-    .suggest{grid-column:auto;display:flex;flex-direction:column;gap:12px}
-    .list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:230px;overflow:auto;padding-right:4px;min-height:232px}
-    .sug{position:relative;border:1px solid #213247;border-radius:12px;overflow:hidden;background:#1a2432;aspect-ratio:16/9}
-    .sug img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .sug::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 45%, rgba(0,0,0,.6));}
-    .sname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-    .sources{position:absolute;right:6px;top:6px;display:flex;gap:4px}
-    .src{flex:0 0 18px;width:18px;height:18px;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.3);box-shadow:0 1px 4px rgba(0,0,0,.35)}
-    .src img{display:block;width:100%;height:100%;object-fit:cover}
-    .src.more{display:grid;place-items:center;background:#0e141b;color:#cfe1ff;font-size:.7rem;font-weight:800;border:1px solid #2a3a52}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
 
-    /* Watermark */
-    .watermark{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;text-align:center;color:var(--muted);opacity:.45;font-size:12px;pointer-events:none}
+  /* ===== Queue band ===== */
+  .queue{flex:0 0 var(--queueBand);min-height:var(--queueBand);display:flex;flex-direction:column;gap:8px}
+  .sectionTitle{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:#cfe1ff}
+  .sectionTitle svg{width:18px;height:18px;opacity:.9}
+  .qbody{display:flex;flex-direction:column;gap:10px}
+  .slots{display:flex;gap:8px;justify-content:center}
+  .slot{width:96px;aspect-ratio:16/9;border-radius:10px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
+  .slot.filled{border-style:solid;border-color:#2d466a}
+  .slot img{width:100%;height:100%;object-fit:cover}
+  .qactions{display:flex;justify-content:center}
+  .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.75rem 1.2rem;font-size:1.05rem;font-weight:800;cursor:pointer}
 
-    /* Toast */
-    .toast{position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#1a2432;border:1px solid #2a3a52;color:#cfe1ff;padding:.5rem .8rem;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .15s ease;z-index:50}
-    .toast.show{opacity:1}
+  /* ===== Split content row ===== */
+  .content{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0}
 
-    /* Mobile iPhone 13 Pro tune */
-    @media (max-width:428px){
-      main{height:calc(100vh - var(--hdr) - 20px)}
-      .row{flex-direction:column}
-      .queue.card{flex:0 0 140px}
-      .grid{grid-template-columns:repeat(3,1fr)}
-      .list{grid-template-columns:repeat(2,1fr)}
-      .slot{width:90px}
-    }
-      .splitL,.splitR{box-shadow:none}
-      .grid{grid-template-columns:repeat(3,1fr)}
-      .list{grid-template-columns:repeat(2,1fr);min-height:260px}
-      .slot{width:90px}
-      .btn{padding:1rem 1.3rem;font-size:1.1rem}
-    }
-  </style>
+  /* Pool left */
+  .searchbar{position:relative;margin-bottom:8px}
+  .searchbar input{width:100%;background:#0e141b;border:1px solid #1b2a3d;color:var(--text);border-radius:10px;padding:.55rem .7rem}
+  .clearX{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:6px;border:1px solid #2a3a52;background:#13202d;color:#cfe1ff;cursor:pointer}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:var(--poolRow);
+    gap:8px;
+    max-height:calc(var(--poolRow)*var(--poolVisible) + 3*8px);
+    overflow:auto;
+    padding-right:4px;
+  }
+  .tile{position:relative;border:1px solid #213247;border-radius:10px;overflow:hidden;cursor:pointer;background:#1a2432;height:100%}
+  .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(92%) contrast(1.02)}
+  .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 40%, rgba(0,0,0,.55))}
+  .tname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .tile.picked{outline:3px solid #3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.35) inset}
+  .badge{position:absolute;left:6px;top:6px;background:#0e2c62;border:1px solid #2e5fb6;color:#cfe1ff;border-radius:8px;padding:2px 6px;font-size:10px;font-weight:900}
+
+  /* Suggestions right */
+  .panel{display:flex;flex-direction:column;min-height:0}
+  .list{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:var(--sugRow);
+    gap:8px;
+    max-height:calc(var(--sugRow)*var(--sugVisible) + 1*8px);
+    min-height:calc(var(--sugRow)*var(--sugVisible) + 1*8px);
+    overflow:auto;
+    padding-right:4px;
+  }
+  .sug{position:relative;border:1px solid #213247;border-radius:12px;overflow:hidden;background:#1a2432;height:100%}
+  .sug img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .sug::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.0) 40%, rgba(0,0,0,.6))}
+  .sname{position:absolute;left:8px;bottom:6px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .sources{position:absolute;right:6px;top:6px;display:flex;gap:4px;flex-wrap:nowrap;align-items:center}
+  .src{flex:0 0 18px;width:18px;height:18px;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.3);box-shadow:0 1px 4px rgba(0,0,0,.35)}
+  .src img{width:100%;height:100%;object-fit:cover}
+  .src.more{display:grid;place-items:center;background:#0e141b;color:#cfe1ff;font-size:.7rem;font-weight:800;border:1px solid #2a3a52}
+
+  /* Watermark */
+  .watermark{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;text-align:center;color:var(--muted);opacity:.45;font-size:12px;pointer-events:none}
+
+  /* Toast */
+  .toast{position:fixed;left:50%;bottom:calc(var(--wmh) + 14px);transform:translate(-50%,0);background:#1f2d3a;color:#d9edff;border:1px solid #2a3a52;border-radius:10px;padding:.45rem .7rem;font-weight:700;opacity:.95}
+
+  /* Mobile portrait tweak (iPhone 13 Pro and similar) */
+  @media (max-width:428px){
+    :root{ --poolRow:78px; --sugRow:104px; --queueBand:110px; }
+    .content{grid-template-columns:1fr}
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .list{grid-template-columns:repeat(2,1fr)}
+    .slot{width:88px}
+  }
+</style>
 </head>
 <body>
   <header>
     <div class="bar">
       <div class="brand">Dota2 OutPick</div>
-      <div class="tag">Everything can work in Dota!</div>
-      <div style="width:18px"></div>
+      <div class="strap">Everything can work in Dota!</div>
     </div>
   </header>
 
   <main>
-    <!-- Enemy Queue -->
+    <!-- Queue band -->
     <section class="queue card">
       <div class="sectionTitle">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
@@ -115,228 +127,211 @@
       </div>
     </section>
 
-    <div class="row" style="display:flex;gap:12px;flex:1;overflow:hidden;min-height:0;">
-      <!-- Pool (left) -->
-      <section class="pool card splitL panel" style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;">
+    <div class="content">
+      <!-- Pool left -->
+      <section class="card panel">
         <div class="sectionTitle">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
           <strong>Choose your enemies</strong>
         </div>
-        <div class="searchbar"><input id="search" placeholder="Search hero…" /><button id="clearSearch" class="clearX" title="Clear">×</button></div>
-        <div id="grid" class="grid" style="flex:1;min-height:0;overflow:auto;"></div>
+        <div class="searchbar">
+          <input id="search" placeholder="Search hero…"/>
+          <button id="clearSearch" class="clearX" title="Clear">×</button>
+        </div>
+        <div id="grid" class="grid"></div>
       </section>
 
-      <!-- Suggestions (right) -->
-      <section class="suggest splitR panel" style="flex:1;min-width:0;overflow:hidden;">
-        <div class="card" style="display:flex;flex-direction:column;min-height:0;flex:1;">
+      <!-- Suggestions right -->
+      <section class="panel" style="gap:var(--gap)">
+        <div class="card panel" style="flex:1">
           <div class="sectionTitle">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
             <strong>You should pick:</strong>
           </div>
-          <div id="pickList" class="list" style="flex:1;min-height:0;overflow:auto;"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
+          <div id="pickList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
         </div>
-        <div class="card" style="display:flex;flex-direction:column;min-height:0;flex:1;">
+        <div class="card panel" style="flex:1">
           <div class="sectionTitle">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
             <strong>You should buy:</strong>
           </div>
-          <div id="itemList" class="list" style="flex:1;min-height:0;overflow:auto;"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
+          <div id="itemList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
         </div>
       </section>
     </div>
   </main>
 
-  <div id="toast" class="toast">You have queued 5 enemies already!</div>
   <footer class="watermark">designed by moonloichoi in saigon</footer>
+  <div id="toast" class="toast" style="display:none"></div>
 
-  <script>
-    // ======================== DATA ========================
-    let HEROES = {};
-    let ITEMS = {};
-    const MAX = 5;
-    let enemyQueue = [];
+<script>
+  // ======= STATE =======
+  let HEROES={}, ITEMS={};
+  const MAX=5;
+  let enemyQueue=[];
 
-    // Shortcuts
-    const el = (id)=>document.getElementById(id);
-    const slots = el('slots');
-    const grid = el('grid');
-    const progress = el('progress');
-    const clearBtn = el('clear');
-    const search = el('search');
-    const pickList = el('pickList');
-    const itemList = el('itemList');
-    const clearSearchBtn = el('clearSearch');
-    const toast = el('toast');
+  // Shortcuts
+  const $=id=>document.getElementById(id);
+  const slots=$('slots'), grid=$('grid'), progress=$('progress'), pickList=$('pickList'), itemList=$('itemList');
+  const clearBtn=$('clear'), search=$('search'), clearSearch=$('clearSearch');
+  const toastEl=$('toast');
 
-    // ======================== RENDER ========================
-    function renderQueue(){
-      slots.innerHTML='';
-      for(let i=0;i<MAX;i++){
-        const s = document.createElement('div');
-        const slug = enemyQueue[i];
-        if(slug){
-          s.className='slot filled';
-          const img = document.createElement('img');
-          img.src = HEROES[slug].img || placeholder('HERO');
-          img.alt = HEROES[slug].name;
-          s.title = HEROES[slug].name + ' — click to remove';
-          s.onclick = ()=>{ enemyQueue.splice(i,1); update(); };
-          s.appendChild(img);
-        } else { s.className='slot'; s.textContent = (i+1); }
-        slots.appendChild(s);
+  // ======= UTIL =======
+  const heroImg = slug => `./assets/heroes/${slug}.png`;
+  const itemImg = slug => `./assets/items/${slug}.png`;
+  const itemSlug = name => name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+
+  function placeholder(label){
+    const t = label||'HERO';
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240">
+         <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+           <stop offset="0" stop-color="#223047"/><stop offset="1" stop-color="#0f1722"/>
+         </linearGradient></defs>
+         <rect fill="url(#g)" width="400" height="240"/>
+         <text x="20" y="210" fill="#cfe1ff" font-family="system-ui,Segoe UI,Roboto" font-size="26" font-weight="700">${t}</text>
+       </svg>`);
+  }
+
+  function showToast(msg){
+    toastEl.textContent=msg; toastEl.style.display='block';
+    clearTimeout(showToast._t); showToast._t=setTimeout(()=>toastEl.style.display='none',1800);
+  }
+
+  function save(){ localStorage.setItem('enemyQueue', JSON.stringify(enemyQueue)); }
+  function load(){ try{ enemyQueue=JSON.parse(localStorage.getItem('enemyQueue')||'[]'); }catch{ enemyQueue=[]; } }
+
+  // ======= RENDER =======
+  function renderQueue(){
+    slots.innerHTML='';
+    for(let i=0;i<MAX;i++){
+      const s=document.createElement('div');
+      const slug=enemyQueue[i];
+      if(slug){
+        s.className='slot filled';
+        const img=new Image(); img.src=HEROES[slug]?.img || placeholder('HERO'); img.alt=HEROES[slug]?.name||'';
+        s.title=(HEROES[slug]?.name||'')+' — click to remove';
+        s.onclick=()=>{ enemyQueue.splice(i,1); update(); };
+        s.appendChild(img);
+      }else{
+        s.className='slot'; s.textContent=(i+1);
       }
-      progress.textContent = `${enemyQueue.length}/${MAX}`;
+      slots.appendChild(s);
     }
+    progress.textContent=`${enemyQueue.length}/${MAX}`;
+  }
 
-    function renderPool(){
-      grid.innerHTML='';
-      const term=(search?.value||'').trim().toLowerCase();
-      const entries = Object.entries(HEROES)
-        .filter(([_,h])=> !term || h.name.toLowerCase().includes(term))
-        .sort((a,b)=> a[1].name.localeCompare(b[1].name));
-
-      entries.forEach(([slug,h])=>{
+  function renderPool(){
+    grid.innerHTML='';
+    Object.entries(HEROES)
+      .filter(([_,h]) => {
+        const term=(search?.value||'').trim().toLowerCase();
+        return !term || h.name.toLowerCase().includes(term);
+      })
+      .sort((a,b)=> a[1].name.localeCompare(b[1].name))
+      .forEach(([slug,h])=>{
         const picked = enemyQueue.includes(slug);
-        const t = document.createElement('div');
-        t.className='tile' + (picked ? ' picked' : '');
-        t.innerHTML = `
-          <img src="${h.img || placeholder('HERO')}" alt="${h.name}">
-          <div class="tname">${h.name}</div>`;
-        if(picked){
-          const badge = document.createElement('div');
-          badge.className = 'pickedBadge';
-          badge.textContent=' PICKED ';
-          t.appendChild(badge);
-        }
-        t.onclick = ()=>{
-          const idx = enemyQueue.indexOf(slug);
-          if(idx >= 0){ enemyQueue.splice(idx,1); }
-          else if(enemyQueue.length < MAX){ enemyQueue.push(slug); }
+        const t=document.createElement('div'); t.className='tile'+(picked?' picked':'');
+        t.innerHTML=`<img src="${h.img||placeholder('HERO')}" alt="${h.name}">
+                     <div class="tname">${h.name}</div>${picked?'<div class="badge">PICKED</div>':''}`;
+        t.onclick=()=>{
+          const idx=enemyQueue.indexOf(slug);
+          if(idx>=0){ enemyQueue.splice(idx,1); }
+          else if(enemyQueue.length<MAX){ enemyQueue.push(slug); }
           else { showToast('You have queued 5 enemies already!'); }
           update();
         };
         grid.appendChild(t);
       });
-    }
+  }
 
-    function renderSuggestions(){
-      // Build maps: suggestion -> Set(enemy sources)
-      const heroSources = new Map();
-      const itemSources = new Map();
+  function renderSuggestions(){
+    // Build mapping: suggestion -> Set(sources)
+    const heroSources=new Map();     // heroSlug -> Set(enemySlug)
+    const itemSources=new Map();     // itemSlug -> Set(enemySlug)
 
-      enemyQueue.forEach(eSlug=>{
-        const enemy = HEROES[eSlug];
-        (enemy?.counters||[]).forEach(sug=>{
-          if(enemyQueue.includes(sug)) return; // don't suggest already picked
-          if(!heroSources.has(sug)) heroSources.set(sug, new Set());
-          heroSources.get(sug).add(eSlug);
-        });
-        (enemy?.item_counters||[]).forEach(item=>{
-          const key = itemSlug(item);
-          if(!itemSources.has(key)) itemSources.set(key, new Set());
-          itemSources.get(key).add(eSlug);
-        });
+    enemyQueue.forEach(eSlug=>{
+      const enemy=HEROES[eSlug];
+      (enemy?.counters||[]).forEach(sug=>{
+        if(enemyQueue.includes(sug)) return; // don't suggest already in enemy queue
+        if(!heroSources.has(sug)) heroSources.set(sug,new Set());
+        heroSources.get(sug).add(eSlug);
       });
-
-      const heroList = [...heroSources.keys()]
-        .filter(s=>HEROES[s])
-        .sort((a,b)=> HEROES[a].name.localeCompare(HEROES[b].name))
-        .slice(0,8);
-      const itemListArr = [...itemSources.keys()]
-        .sort((a,b)=> a.localeCompare(b))
-        .slice(0,8);
-
-      // Render hero suggestions (view-only)
-      pickList.innerHTML='';
-      if(heroList.length===0) pickList.innerHTML = `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
-      heroList.forEach(slug=>{
-        const h = HEROES[slug];
-        const e = document.createElement('div');
-        e.className='sug';
-        e.innerHTML = `
-          <img src="${h.img || placeholder('HERO')}" alt="${h.name}">
-          <div class="sname">${h.name}</div>`;
-        // enemy source mini-avatars (can be multiple)
-        const srcWrap = document.createElement('div'); srcWrap.className='sources';
-        const sources = [...(heroSources.get(slug)||[])];
-        sources.slice(0,3).forEach(slg=>{
-          const box = document.createElement('div'); box.className='src';
-          box.innerHTML = `<img src="${HEROES[slg]?.img || placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
-          srcWrap.appendChild(box);
-        });
-        if(sources.length>3){
-          const more = document.createElement('div'); more.className='src more'; more.textContent = `+${sources.length-3}`;
-          srcWrap.appendChild(more);
-        }
-        e.appendChild(srcWrap);
-        pickList.appendChild(e);
+      (enemy?.item_counters||[]).forEach(itemName=>{
+        const key=itemSlug(itemName);
+        if(!itemSources.has(key)) itemSources.set(key,new Set());
+        itemSources.get(key).add(eSlug);
       });
+    });
 
-      // Render item suggestions (view-only), with enemy sources
-      itemList.innerHTML='';
-      if(itemListArr.length===0) itemList.innerHTML = `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
-      itemListArr.forEach(key=>{
-        const meta = ITEMS[key]||{name:key, img: placeholder('ITEM')};
-        const e = document.createElement('div');
-        e.className='sug';
-        e.innerHTML = `
-          <img src="${meta.img || placeholder('ITEM')}" alt="${meta.name}">
-          <div class="sname">${meta.name}</div>`;
-        const srcWrap = document.createElement('div'); srcWrap.className='sources';
-        const sources = [...(itemSources.get(key)||[])];
-        sources.slice(0,3).forEach(slg=>{
-          const box = document.createElement('div'); box.className='src';
-          box.innerHTML = `<img src="${HEROES[slg]?.img || placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
-          srcWrap.appendChild(box);
-        });
-        if(sources.length>3){
-          const more = document.createElement('div'); more.className='src more'; more.textContent = `+${sources.length-3}`;
-          srcWrap.appendChild(more);
-        }
-        e.appendChild(srcWrap);
-        itemList.appendChild(e);
+    // Sort + render hero suggestions
+    const heroList=[...heroSources.keys()].filter(s=>HEROES[s]).sort((a,b)=>HEROES[a].name.localeCompare(HEROES[b].name));
+    pickList.innerHTML = heroList.length? '' : `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
+    heroList.forEach(slug=>{
+      const h=HEROES[slug];
+      const e=document.createElement('div'); e.className='sug'; e.setAttribute('aria-disabled','true');
+      e.innerHTML=`<img src="${h.img||placeholder('HERO')}" alt="${h.name}"><div class="sname">${h.name}</div>`;
+      const srcWrap=document.createElement('div'); srcWrap.className='sources';
+      const sources=[...(heroSources.get(slug)||[])];
+      sources.slice(0,4).forEach(slg=>{
+        const box=document.createElement('div'); box.className='src';
+        box.innerHTML=`<img src="${HEROES[slg]?.img||placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
+        srcWrap.appendChild(box);
       });
-    }
-
-    function placeholder(label){
-      const t = label||'HERO';
-      return 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#223047"/><stop offset="1" stop-color="#0f1722"/></linearGradient></defs><rect fill="url(#g)" width="400" height="225"/><text x="20" y="200" fill="#cfe1ff" font-family="system-ui,Segoe UI,Roboto" font-size="26" font-weight="700">${t}</text></svg>`);
-    }
-
-    // ======================== DATA LOADER ========================
-    const heroImg = (slug) => `./assets/heroes/${slug}.png`;
-    const itemImg = (slug) => `./assets/items/${slug}.png`;
-
-    async function loadData(){
-      try{
-        const [heroes, items] = await Promise.all([
-          fetch('./heroes.json?v=' + Date.now()).then(r=>r.json()),
-          fetch('./items.json?v=' + Date.now()).then(r=>r.json()).catch(()=> ({}))
-        ]);
-        Object.keys(heroes).forEach(slug=>{ heroes[slug].img = heroImg(slug); });
-        Object.keys(items).forEach(slug=>{ items[slug].img = itemImg(slug); });
-        HEROES = heroes; ITEMS = items; init();
-      }catch(e){
-        console.error('Failed to load data JSON. Falling back to empty sets.', e);
-        HEROES = {}; ITEMS = {}; init();
+      if(sources.length>4){
+        const more=document.createElement('div'); more.className='src more'; more.textContent=`+${sources.length-4}`;
+        srcWrap.appendChild(more);
       }
-    }
+      e.appendChild(srcWrap);
+      pickList.appendChild(e);
+    });
 
-    // ======================== STATE & EVENTS ========================
-    function update(){ renderQueue(); renderPool(); renderSuggestions(); save(); }
-    function save(){ localStorage.setItem('enemyQueue', JSON.stringify(enemyQueue)); }
-    function load(){ try{ enemyQueue = JSON.parse(localStorage.getItem('enemyQueue')||'[]'); }catch{ enemyQueue=[]; } }
-    function itemSlug(name){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); }
+    // Sort + render item suggestions
+    const itemListArr=[...itemSources.keys()].sort((a,b)=>(ITEMS[a]?.name||a).localeCompare(ITEMS[b]?.name||b));
+    itemList.innerHTML = itemListArr.length? '' : `<span style="color:var(--muted)">Add heroes to the queue.</span>`;
+    itemListArr.forEach(key=>{
+      const meta=ITEMS[key] || {name:key, img:placeholder('ITEM')};
+      const e=document.createElement('div'); e.className='sug'; e.setAttribute('aria-disabled','true');
+      e.innerHTML=`<img src="${meta.img}" alt="${meta.name}"><div class="sname">${meta.name}</div>`;
+      const srcWrap=document.createElement('div'); srcWrap.className='sources';
+      const sources=[...(itemSources.get(key)||[])];
+      sources.slice(0,4).forEach(slg=>{
+        const box=document.createElement('div'); box.className='src';
+        box.innerHTML=`<img src="${HEROES[slg]?.img||placeholder('H')}" alt="${HEROES[slg]?.name||''}">`;
+        srcWrap.appendChild(box);
+      });
+      if(sources.length>4){
+        const more=document.createElement('div'); more.className='src more'; more.textContent=`+${sources.length-4}`;
+        srcWrap.appendChild(more);
+      }
+      e.appendChild(srcWrap);
+      itemList.appendChild(e);
+    });
+  }
 
-    clearBtn.onclick = ()=>{ enemyQueue=[]; update(); };
-    search.addEventListener('input', ()=> renderPool());
-    if(clearSearchBtn){ clearSearchBtn.onclick = ()=>{ search.value=''; renderPool(); search.focus(); }; }
+  function update(){ renderQueue(); renderPool(); renderSuggestions(); save(); }
 
-    function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=> toast.classList.remove('show'), 1500); }
+  // ======= DATA =======
+  async function loadData(){
+    const [heroes, items] = await Promise.all([
+      fetch('./heroes.json?v='+Date.now()).then(r=>r.json()),
+      fetch('./items.json?v='+Date.now()).then(r=>r.json()).catch(()=> ({}))
+    ]);
+    // Attach image paths
+    Object.keys(heroes).forEach(slug=>{ heroes[slug].img = heroImg(slug); });
+    Object.keys(items).forEach(slug=>{ items[slug].img = itemImg(slug); });
+    HEROES=heroes; ITEMS=items;
+  }
 
-    // init
-    function init(){ load(); update(); }
-    loadData();
-  </script>
+  // ======= EVENTS =======
+  clearBtn.onclick=()=>{ enemyQueue=[]; update(); };
+  search.addEventListener('input', ()=> renderPool());
+  clearSearch.onclick=()=>{ search.value=''; renderPool(); };
+
+  // ======= INIT =======
+  (async function(){
+    load(); await loadData(); update();
+  })();
+</script>
 </body>
 </html>
