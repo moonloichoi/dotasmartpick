@@ -1,7 +1,7 @@
-// main.js (module)
-import { MAX, state, loadState, saveState } from "./state.js";
-import { HEROES, ITEMS, loadData, placeholder } from "./data.js";
-import { buildSuggestions } from "./logic.js";
+// app/main.js (module trong thư mục /app)
+import { MAX, state, loadState, saveState } from "../core/state.js";
+import { HEROES, ITEMS, loadData, placeholder } from "../core/data.js";
+import { buildSuggestions } from "../core/logic.js";
 
 const $ = (id) => document.getElementById(id);
 
