@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Dota2 OutPick</title>
-<link rel="stylesheet" href="./styles.css" />
+<link rel="stylesheet" href="./styles.css?v=1" />
 </head>
 <body>
   <header>
@@ -18,7 +18,7 @@
     <!-- Queue band -->
     <section class="queue card">
       <div class="sectionTitle">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
         <strong>Enemy Queue</strong>
         <span id="progress" style="color:var(--muted);margin-left:6px">0/5</span>
       </div>
@@ -32,7 +32,7 @@
       <!-- Pool left -->
       <section class="card panel">
         <div class="sectionTitle">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
           <strong>Choose your enemies</strong>
         </div>
         <div class="searchbar">
@@ -46,14 +46,14 @@
       <section class="panel gapped">
         <div class="card panel flex1">
           <div class="sectionTitle">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
             <strong>You should pick:</strong>
           </div>
           <div id="pickList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
         </div>
         <div class="card panel flex1">
           <div class="sectionTitle">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
             <strong>You should buy:</strong>
           </div>
           <div id="itemList" class="list"><span style="color:var(--muted)">Add heroes to the queue.</span></div>
@@ -66,6 +66,6 @@
   <div id="toast" class="toast" style="display:none"></div>
 
   <!-- App entry -->
-  <script type="module" src="./main.js"></script>
+  <script type="module" src="./main.js?v=1"></script>
 </body>
 </html>
