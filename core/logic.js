@@ -20,3 +20,6 @@ function buildSuggestions(enemyQueue, HEROES) {
 
   return { heroSources, itemSources };
 }
+
+// ===== Global expose =====
+window.buildSuggestions = buildSuggestions;
