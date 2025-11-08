@@ -13,9 +13,9 @@
 
     /* SIZE DIALS (desktop) */
     --queueBand:120px;   /* top band */
-    --poolRow:80px;      /* hero tile height in pool */
-    --poolVisible:4.2;   /* 4 rows + peeking 5th */
-    --sugRow:110px;      /* suggestion tile height */
+    --poolRow:72px;      /* hero tile height in pool */
+    --poolVisible:4;     /* exactly 4 rows */
+    --sugRow:96px;       /* suggestion tile height */
     --sugVisible:2;      /* 2 rows visible */
   }
 
@@ -33,7 +33,7 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
 
   /* ===== Queue band ===== */
-  .queue{flex:0 0 var(--queueBand);min-height:var(--queueBand);display:flex;flex-direction:column;gap:8px}
+  .queue{flex:0 0 var(--queueBand);min-height:var(--queueBand);display:flex;flex-direction:column;gap:8px;position:relative;z-index:5}
   .sectionTitle{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:#cfe1ff}
   .sectionTitle svg{width:18px;height:18px;opacity:.9}
   .qbody{display:flex;flex-direction:column;gap:10px}
@@ -41,8 +41,8 @@
   .slot{width:96px;aspect-ratio:16/9;border-radius:10px;display:grid;place-items:center;border:1px dashed #2a3a52;color:#7f92a7;background:#0e141b;overflow:hidden}
   .slot.filled{border-style:solid;border-color:#2d466a}
   .slot img{width:100%;height:100%;object-fit:cover}
-  .qactions{display:flex;justify-content:center}
-  .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.75rem 1.2rem;font-size:1.05rem;font-weight:800;cursor:pointer}
+  .qactions{display:flex;justify-content:center;margin-top:4px;position:relative;z-index:7}
+  .btn{background:#182330;border:1px solid #23334a;color:#cfe1ff;border-radius:14px;padding:.6rem 1.1rem;font-size:1rem;font-weight:800;cursor:pointer;position:relative;z-index:8}
 
   /* ===== Split content row ===== */
   .content{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);flex:1;min-height:0}
@@ -54,7 +54,7 @@
 
   .grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(5,1fr);       /* 5 hero / hàng */
     grid-auto-rows:var(--poolRow);
     gap:8px;
     max-height:calc(var(--poolRow)*var(--poolVisible) + 3*8px);
@@ -72,11 +72,11 @@
   .panel{display:flex;flex-direction:column;min-height:0}
   .list{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(3,1fr);      /* 3 hero / hàng */
     grid-auto-rows:var(--sugRow);
     gap:8px;
-    max-height:calc(var(--sugRow)*var(--sugVisible) + 1*8px);
-    min-height:calc(var(--sugRow)*var(--sugVisible) + 1*8px);
+    max-height:calc(var(--sugRow)*var(--sugVisible) + 8px);
+    min-height:calc(var(--sugRow)*var(--sugVisible) + 8px);
     overflow:auto;
     padding-right:4px;
   }
@@ -97,7 +97,7 @@
 
   /* Mobile portrait tweak (iPhone 13 Pro and similar) */
   @media (max-width:428px){
-    :root{ --poolRow:78px; --sugRow:104px; --queueBand:110px; }
+    :root{ --poolRow:70px; --sugRow:92px; --queueBand:110px; }
     .content{grid-template-columns:1fr}
     .grid{grid-template-columns:repeat(3,1fr)}
     .list{grid-template-columns:repeat(2,1fr)}
