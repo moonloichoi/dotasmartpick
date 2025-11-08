@@ -3,11 +3,11 @@
   --hdr:56px; --wmh:22px;
   --poolRow:64px;
 
-  /* pick/buy card: chiều cao cố định để layout không nhúc nhích */
+  /* pick/buy card: cố định chiều cao để layout không nhúc nhích */
   --sugMaxW:180px;
-  --sugHeroH: calc((var(--sugMaxW) * 9 / 16) + 34px); /* ảnh 16:9 + name (2 dòng) */
-  --sugItemH: calc((var(--sugMaxW) * 8 / 11) + 34px); /* ảnh 11:8 + name (2 dòng) */
-  --sugCardH: calc(max(var(--sugHeroH), var(--sugItemH)) + 18px); /* + padding nội bộ */
+  --sugHeroH: calc((var(--sugMaxW) * 9 / 16) + 36px); /* ảnh 16:9 + name 2 dòng */
+  --sugItemH: calc((var(--sugMaxW) * 8 / 11) + 36px); /* ảnh 11:8 + name 2 dòng */
+  --sugCardH: calc(max(var(--sugHeroH), var(--sugItemH)) + 18px); /* + padding */
 }
 
 *{box-sizing:border-box}
@@ -43,7 +43,7 @@ body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;b
 .grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  grid-auto-rows:calc(var(--poolRow) + 34px); /* 16:9 thumb + name 2 dòng */
+  grid-auto-rows:calc(var(--poolRow) + 36px); /* 16:9 + name 2 dòng */
   gap:8px;
   max-height:100%;
   overflow:auto;
@@ -55,15 +55,15 @@ body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;b
 .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .name{
   padding:6px 8px 8px 8px;font-weight:800;font-size:12px;text-align:left;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden;word-break:break-word;line-height:1.15;min-height:calc(1.15em*2 + 8px);
+  /* 2 dòng, không hiển thị … */
+  overflow:hidden;display:block;line-height:1.2;max-height:calc(1.2em*2 + 8px);text-overflow:clip;white-space:normal;word-break:break-word;
 }
 .tile.picked{outline:3px solid var(--brand); box-shadow:0 0 0 2px rgba(59,130,246,.35) inset; filter:saturate(1.05) brightness(1.05)}
 .pickedBadge{position:absolute;top:6px;left:6px;background:var(--brand);border-radius:8px;padding:.1rem .35rem;font-size:.7rem;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
 
-/* Suggestions — cố định chiều cao, 1 hàng 5 ô, căn giữa dọc, tên 2 dòng trái */
+/* Suggestions — cố định chiều cao, 1 hàng 5 ô, căn giữa dọc; tên 2 dòng trái */
 .panel{display:flex;flex-direction:column;justify-content:center;gap:12px;min-height:0}
-.panel .card{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:var(--sugCardH)}
+.panel .card{display:flex;flex-direction:column;align-items:center;justify-content:center;height:var(--sugCardH);min-height:var(--sugCardH)}
 .list{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;overflow:hidden;align-items:center;justify-items:center;width:100%}
 .sug{border:1px solid #213247;border-radius:12px;background:#1a2432;overflow:hidden;display:flex;flex-direction:column;width:100%;max-width:var(--sugMaxW)}
 .sug .thumb{position:relative;width:100%;overflow:hidden;border-bottom:1px solid #213247}
@@ -71,10 +71,9 @@ body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;b
 .sug.item .thumb{aspect-ratio:11/8}
 .sname{
   padding:6px 8px 8px 8px;font-weight:800;font-size:12px;text-align:left;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden;word-break:break-word;line-height:1.15;min-height:calc(1.15em*2 + 8px);
+  overflow:hidden;display:block;line-height:1.2;max-height:calc(1.2em*2 + 8px);text-overflow:clip;white-space:normal;word-break:break-word;
 }
-/* nguồn: overlay tuyệt đối, không làm đổi layout; khung nhẹ */
+/* nguồn: overlay tuyệt đối, không đẩy layout; có khung */
 .sources{position:absolute;right:6px;top:6px;display:flex;gap:4px;flex-wrap:wrap;max-width:65%}
 .src{width:18px;height:18px;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.4);background:#0b0f14}
 .src img{width:100%;height:100%;object-fit:cover}
