@@ -44,3 +44,10 @@ function placeholder(label) {
      </svg>`
   );
 }
+
+// ===== Global expose =====
+window.HEROES = HEROES;
+window.ITEMS = ITEMS;
+window.loadData = loadData;
+window.itemSlug = itemSlug;
+window.placeholder = placeholder;
