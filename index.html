@@ -2,58 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dota2 OutPick</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <!-- Header (giữ nguyên vị trí/logo) -->
   <header class="hdr">
     <div class="bar">
       <div class="brand">Dota2 OutPick</div>
       <div class="tag">Everything can work in Dota!</div>
-      <div style="width:18px"></div>
+      <div class="spacer"></div>
     </div>
   </header>
 
+  <!-- Shell tổng: 3 khu chính -->
   <main class="shell">
     <!-- Enemy queue -->
     <section class="queue card">
       <div class="sectionTitle">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l7 4v6c0 5-3.8 9.3-7 10-3.2-.7-7-5-7-10V6l7-4zM7 9h10v3c0 3.7-2.6 7.3-5 8-2.4-.7-5-4.3-5-8V9z"/></svg>
         <strong>Enemy queue</strong>
         <span id="progress" class="muted">0/5</span>
       </div>
       <div class="qbody">
         <div id="slots" class="slots"></div>
-        <div class="qactions"><button id="clear" class="btn">Clear</button></div>
+        <div class="qactions">
+          <button id="clear" class="btn">Clear</button>
+        </div>
       </div>
     </section>
 
-    <!-- Pool (left) -->
+    <!-- Choose your enemies -->
     <section class="pool card">
       <div class="sectionTitle">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a5 5 0 100-10 5 5 0 000 10zm0-2a3 3 0 110-6 3 3 0 010 6zm9-4a1 1 0 010 2h-2a1 1 0 110-2h2zM5 12a1 1 0 100 2H3a1 1 0 100-2h2zm13.66-6.66a1 1 0 011.41 1.41l-1.41 1.41a1 1 0 01-1.41-1.41l1.41-1.41zM6.34 17.66a1 1 0 01-1.41-1.41l1.41-1.41a1 1 0 011.41 1.41L6.34 17.66z"/></svg>
         <strong>Choose your enemies</strong>
       </div>
       <div class="searchbar">
-        <input id="search" placeholder="Search hero…" />
+        <input id="search" type="text" placeholder="Search hero…" />
         <button id="clearSearch" class="clearX" title="Clear">×</button>
       </div>
       <div id="grid" class="grid"></div>
     </section>
 
-    <!-- Suggestions (right) -->
+    <!-- Suggestions (You should pick / You should buy) -->
     <section class="panel">
       <div class="card pickCard">
         <div class="sectionTitle">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C7 3 3 7 3 12v2h5l2 4h4l2-4h5v-2c0-5-4-9-9-9z"/></svg>
           <strong>You should pick:</strong>
         </div>
         <div id="pickList" class="list"></div>
       </div>
+
       <div class="card buyCard">
         <div class="sectionTitle">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6V5a4 4 0 118 0v1h3a1 1 0 011 1v11a3 3 0 01-3 3H7a3 3 0 01-3-3V7a1 1 0 011-1h3zm2 0h4V5a2 2 0 10-4 0v1z"/></svg>
           <strong>You should buy:</strong>
         </div>
         <div id="itemList" class="list"></div>
@@ -61,10 +66,13 @@
     </section>
   </main>
 
-  <div id="toast" class="toast"></div>
+  <!-- Toast + Watermark -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <footer class="watermark">designed by moonloichoi in saigon</footer>
 
-  <!-- Load in order: logic -> main -->
+  <!-- Giữ đúng thứ tự load như file gốc -->
+  <script src="./data.js"></script>
+  <script src="./state.js"></script>
   <script src="./logic.js"></script>
   <script src="./main.js"></script>
 </body>
