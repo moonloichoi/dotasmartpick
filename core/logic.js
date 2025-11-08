@@ -1,38 +1,22 @@
-const ensureSet = (m, k) => (m.has(k) ? m.get(k) : (m.set(k, new Set()), m.get(k)));
+import { itemSlug } from "./data.js";
 
 export function buildSuggestions(enemyQueue, HEROES) {
-  const enemy = enemyQueue.filter(s => s && HEROES[s]);
   const heroSources = new Map();
   const itemSources = new Map();
 
-  if (enemy.length === 0) return { heroSources, itemSources };
+  enemyQueue.forEach((eSlug) => {
+    const enemy = HEROES[eSlug];
+    (enemy?.counters || []).forEach((sug) => {
+      if (enemyQueue.includes(sug)) return;
+      if (!heroSources.has(sug)) heroSources.set(sug, new Set());
+      heroSources.get(sug).add(eSlug);
+    });
+    (enemy?.item_counters || []).forEach((item) => {
+      const key = itemSlug(item);
+      if (!itemSources.has(key)) itemSources.set(key, new Set());
+      itemSources.get(key).add(eSlug);
+    });
+  });
 
-  const allHeroes = Object.keys(HEROES);
-
-  for (const a of allHeroes) {
-    const H = HEROES[a];
-    if (!H) continue;
-
-    const counters = new Set([
-      ...(Array.isArray(H.counters) ? H.counters : []),
-      ...(Array.isArray(H.good_against) ? H.good_against : [])
-    ]);
-
-    let matched = false;
-    for (const e of enemy) {
-      if (counters.has(e)) {
-        ensureSet(heroSources, a).add(e);
-        matched = true;
-      }
-    }
-
-    if (matched && Array.isArray(H.items)) {
-      for (const e of enemy) {
-        for (const it of H.items) ensureSet(itemSources, it).add(e);
-      }
-    }
-  }
-
-  for (const e of enemy) heroSources.delete(e);
   return { heroSources, itemSources };
 }
