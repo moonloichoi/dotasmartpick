@@ -1,6 +1,6 @@
-import { MAX, state, loadState, saveState } from "/dota2outpick/core/state.js";
-import { HEROES, ITEMS, loadData, placeholder } from "/dota2outpick/core/data.js";
-import { buildSuggestions } from "/dota2outpick/core/logic.js";
+import { MAX, state, loadState, saveState } from "../core/state.js";
+import { HEROES, ITEMS, loadData, placeholder } from "../core/data.js";
+import { buildSuggestions } from "../core/logic.js";
 
 const $ = (id) => document.getElementById(id);
 
