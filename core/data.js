@@ -1,71 +1,38 @@
 export let HEROES = {};
-export let ITEMS  = {};
+export let ITEMS = {};
 
-const txt = (v) => (v ?? "").toString();
-const slugify = (s) => txt(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-
-export function placeholder(label = "IMG") {
-  const t = encodeURIComponent(label.slice(0, 6));
-  return "data:image/svg+xml;utf8," +
-    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>" +
-    "<rect width='120' height='120' fill='%23eee'/>" +
-    `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%23999'>${t}</text>` +
-    "</svg>";
-}
-
-async function loadJSON(path) {
-  const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(`fetch ${path} ${res.status}`);
-  return res.json();
-}
-
-function normalizeHeroes(list) {
-  const map = {};
-  for (const h of list || []) {
-    const slug = h.slug ? slugify(h.slug) : slugify(h.name || "");
-    if (!slug) continue;
-    map[slug] = {
-      slug,
-      name: h.name || slug,
-      img: h.img || h.icon || h.image || `./assets/heroes/${slug}.png`,
-      counters: Array.isArray(h.counters) ? h.counters.map(slugify) : [],
-      good_against: Array.isArray(h.good_against) ? h.good_against.map(slugify) : [],
-      bad_against: Array.isArray(h.bad_against) ? h.bad_against.map(slugify) : [],
-      items: Array.isArray(h.items) ? h.items.map(slugify) : []
-    };
-  }
-  return map;
-}
-
-function normalizeItems(list) {
-  const map = {};
-  for (const it of list || []) {
-    const key = it.key ? slugify(it.key) : slugify(it.name || "");
-    if (!key) continue;
-    map[key] = {
-      key,
-      name: it.name || key,
-      img: it.img || it.icon || `./assets/items/${key}.png`
-    };
-  }
-  return map;
-}
+const heroImg = (slug) => `./assets/heroes/${slug}.png`;
+const itemImg = (slug) => `./assets/items/${slug}.png`;
 
 export async function loadData() {
-  try {
-    const [heroesRaw, itemsRaw] = await Promise.all([
-      loadJSON("./heroes.json"),
-      loadJSON("./items.json")
-    ]);
+  const [heroes, items] = await Promise.all([
+    fetch("./heroes.json?v=" + Date.now()).then((r) => r.json()),
+    fetch("./items.json?v=" + Date.now()).then((r) => r.json()).catch(() => ({})),
+  ]);
 
-    const heroesList = Array.isArray(heroesRaw) ? heroesRaw : Object.values(heroesRaw || {});
-    const itemsList  = Array.isArray(itemsRaw)  ? itemsRaw  : Object.values(itemsRaw || {});
+  Object.keys(heroes).forEach((slug) => (heroes[slug].img = heroImg(slug)));
+  Object.keys(items).forEach((slug) => (items[slug].img = itemImg(slug)));
 
-    HEROES = normalizeHeroes(heroesList);
-    ITEMS  = normalizeItems(itemsList);
-  } catch (e) {
-    HEROES = {};
-    ITEMS = {};
-    console.warn("loadData error:", e);
-  }
+  HEROES = heroes;
+  ITEMS = items;
+}
+
+export function itemSlug(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+}
+
+export function placeholder(label) {
+  const t = label || "HERO";
+  return (
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240">
+         <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+           <stop offset="0" stop-color="#223047"/><stop offset="1" stop-color="#0f1722"/>
+         </linearGradient></defs>
+         <rect fill="url(#g)" width="400" height="240"/>
+         <text x="20" y="210" fill="#cfe1ff" font-family="system-ui,Segoe UI,Roboto" font-size="26" font-weight="700">${t}</text>
+       </svg>`
+    )
+  );
 }
